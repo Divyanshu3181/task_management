@@ -8,12 +8,17 @@ export default function TaskFilters() {
   const dispatch = useDispatch();
   const currentFilter = useSelector((state) => state.tasks.filter);
   const searchQuery = useSelector((state) => state.tasks.searchQuery);
+  const tasks = useSelector((state) => state.tasks.tasks);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const clearTasks = () => {
-    localStorage.removeItem('tasks');
-    dispatch(setTasks([]));
+    try {
+      localStorage.removeItem('tasks');
+      dispatch(setTasks([]));
+    } catch (error) {
+      console.error('Failed to clear tasks:', error);
+    }
   };
 
   const showConfirmationModal = () => {
@@ -35,6 +40,19 @@ export default function TaskFilters() {
     { value: 'completed', label: 'Completed' },
     { value: 'overdue', label: 'Overdue' },
   ];
+
+  const filteredTasks = tasks.filter((task) => {
+    if (currentFilter === 'completed') {
+      return task.isCompleted;
+    }
+    if (currentFilter === 'pending') {
+      return !task.isCompleted;
+    }
+    if (currentFilter === 'overdue') {
+      return task.dueDate < new Date() && !task.isCompleted;
+    }
+    return true;
+  });
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mb-6">
@@ -64,12 +82,14 @@ export default function TaskFilters() {
               {filter.label}
             </button>
           ))}
-          <button
-            onClick={showConfirmationModal}
-            className="bg-red-600 text-white px-4 py-2 rounded-md"
-          >
-            Clear All Tasks
-          </button>
+          {tasks.length > 0 && (
+            <button
+              onClick={showConfirmationModal}
+              className="bg-red-600 text-white px-4 py-2 rounded-md"
+            >
+              Clear All Tasks
+            </button>
+          )}
         </div>
       </div>
 
@@ -80,6 +100,14 @@ export default function TaskFilters() {
           task={{ name: 'all tasks' }}
         />
       )}
+
+      <div className="flex flex-wrap gap-2">
+        {filteredTasks.map((task) => (
+          <div key={task.id} className="task-item">
+            {task.name}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
