@@ -9,7 +9,6 @@ export default function TaskFilters() {
   const currentFilter = useSelector((state) => state.tasks.filter);
   const searchQuery = useSelector((state) => state.tasks.searchQuery);
 
-  // State for modal visibility
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const clearTasks = () => {
