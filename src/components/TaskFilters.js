@@ -41,19 +41,6 @@ export default function TaskFilters() {
     { value: 'overdue', label: 'Overdue' },
   ];
 
-  const filteredTasks = tasks.filter((task) => {
-    if (currentFilter === 'completed') {
-      return task.isCompleted;
-    }
-    if (currentFilter === 'pending') {
-      return !task.isCompleted;
-    }
-    if (currentFilter === 'overdue') {
-      return task.dueDate < new Date() && !task.isCompleted;
-    }
-    return true;
-  });
-
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mb-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
@@ -102,7 +89,7 @@ export default function TaskFilters() {
       )}
 
       <div className="flex flex-wrap gap-2">
-        {filteredTasks.map((task) => (
+        {tasks.map((task) => (
           <div key={task.id} className="task-item">
             {task.name}
           </div>
