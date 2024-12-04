@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 
 const initialState = {
-  allTasks: [],
+  Tasks: [],
   filter: 'all',
   searchQuery: ''
 };

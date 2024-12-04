@@ -6,9 +6,9 @@ import ConfirmationModal from './ConfirmationModal';
 
 export default function TaskFilters() {
   const dispatch = useDispatch();
-  const currentFilter = useSelector((state) => state.tasks.filter);
+  const currentFilter = useSelector((state) => state.tasks.filter) || 'all';
   const searchQuery = useSelector((state) => state.tasks.searchQuery);
-  const tasks = useSelector((state) => state.tasks.tasks);
+  const tasks = useSelector((state) => state.tasks.tasks) || [];
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
